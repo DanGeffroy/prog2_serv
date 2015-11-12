@@ -1,0 +1,6 @@
+{
+    "Implementation": "1",
+    "MaxThread": "2",
+    "MaxIdleTime": "10",
+    "Port": "5555"
+}
