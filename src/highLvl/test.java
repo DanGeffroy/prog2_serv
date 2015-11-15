@@ -1,4 +1,4 @@
-package hightLvl;
+package highLvl;
 
 public class test {
 
