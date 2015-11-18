@@ -5,15 +5,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.io.*;
 
-class Client implements Runnable
+class ClientLL implements Runnable
 {
   private Thread thread;
   private static Socket socket;
   private PrintStream printStream;
   private BufferedReader bufferedReader;
-  private static ServerEcho serverEcho;
+  private static ServerEchoLL serverEcho;
 
-  Client(Socket s, ServerEcho serverE)
+  ClientLL(Socket s, ServerEchoLL serverE)
   {
 	serverEcho =serverE;
     socket=s;
