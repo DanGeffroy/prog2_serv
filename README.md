@@ -6,6 +6,6 @@ Every thing you type comes back to you !
 </p>
 #How to launch it?
 <b>For the serveur :</b> Simply use this command : "java -jar serveurEcho.jar" </br>
-<i>please make sur you have the config.txt next to the jar when you lauch it or it will use default value</i></br>
+<i>please make sur you have the config.txt next to the jar when you launch it or it will use default values</i></br>
 You can configure a custom serveur by editing the config.txt file it's in JSON !</br>
 <b>For the client :</b> you can use telnet , "telnet 127.0.0.1 666"
