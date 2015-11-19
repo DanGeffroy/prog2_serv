@@ -58,7 +58,7 @@ public class ServerEchoLL {
 		try {
 			serverSocket = new ServerSocket(port);
 			while (true) {
-				/* On gere le nombre de connexion maximum "à la main"*/
+				/* On gere le nombre de connexion maximum "à la main" */
 				if (this.nbConnectionActuel < this.nbMaxConnexion) {
 					new ClientLL(serverSocket.accept(), this);
 					this.nbConnectionActuel++;
