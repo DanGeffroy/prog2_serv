@@ -2,5 +2,5 @@
     "Implementation": "lowlvl",
     "MaxThread": "2",
     "MaxIdleTime": "10",
-    "Port": "5555"
+    "Port": "666"
 }
