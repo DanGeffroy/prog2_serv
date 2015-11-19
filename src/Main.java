@@ -6,9 +6,20 @@ import lowLvl.ServerEchoLL;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
+/**
+ * Main est la classe appeler l'ors de l'execution du jar
+ * Sont role est principalement de lire le fichier de configuration ecrit en JSON
+ * et enssuite lancer la bonne implementation avec les bon parametre.
+ * @author Damien/Dan
+ *
+ */
 public class Main {
-
+	/**
+	 * main est la methode principale de la classe
+	 * @param args le tableau de parametre que l'on peut placer 
+	 * l'ors de l'execution du jar, on ne s'en sert pas ici, nous utilisons un fichier
+	 * de configuration.
+	 */
 	public static void main(String[] args) {
 		String implementation = null;
 		int nbMaxConnexion = 0;
@@ -46,10 +57,18 @@ public class Main {
 		}
 
 		if (implementation.equals("lowlvl")) {
+			/*
+			 * Si l'utilisateur a specifié lowlvl dans le ficheir de configuration
+			 * on lance l'implementation de bas niveau
+			 */
 			System.out.println("Lancement du serveur de bas niveau");
 			ServerEchoLL servLow = new ServerEchoLL(maxIdleTime, port, nbMaxConnexion);
 			servLow.launch();
 		} else if (implementation.equals("highlvl")) {
+			/*
+			 * Si l'utilisateur a specifié highlvl dans le ficheir de configuration
+			 * on lance l'implementation de haut niveau
+			 */
 			System.out.println("Lancement du serveur de haut niveau");
 			ServerEchoHL servHigt = new ServerEchoHL(maxIdleTime, port, nbMaxConnexion);
 			servHigt.launch();
