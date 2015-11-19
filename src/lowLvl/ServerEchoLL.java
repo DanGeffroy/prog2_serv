@@ -11,7 +11,6 @@ public class ServerEchoLL {
 	public int maxIdleTime;
 	private int port;
 	private int nbMaxConnexion;
-	private static ServerSocket serverSocket;
 	
 	
 	public ServerEchoLL(int maxIdleTime, int port,  int nbMaxConnexion) {
@@ -19,13 +18,13 @@ public class ServerEchoLL {
 		this.nbMaxConnexion = nbMaxConnexion;
 		this.maxIdleTime = maxIdleTime;
 		this.port = port;
-		this.nbMaxConnexion = nbMaxConnexion;
 	}
 
 	public void launch() {
 		PrintStream printStream;
 		Socket socket;
-
+		ServerSocket serverSocket;
+		
 		try {
 			serverSocket = new ServerSocket(port);
 			while (true) {
@@ -33,7 +32,7 @@ public class ServerEchoLL {
 					new ClientLL(serverSocket.accept(), this);
 					this.nbConnectionActuel++;
 					System.out.println("Nombre actuel de client connect� : " + this.nbConnectionActuel);
-				} else {
+				}else {
 					socket = serverSocket.accept();
 					printStream = new PrintStream(socket.getOutputStream());
 					printStream.println("Desole le nombre maximal de connection est atteint");

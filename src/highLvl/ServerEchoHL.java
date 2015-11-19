@@ -1,42 +1,33 @@
 package highLvl;
 
+
 import java.net.*;
-import java.util.Collection;
 import java.util.concurrent.*;
 
 public class ServerEchoHL {
 
-	private ServerSocket s;
-	private Socket client;
-	private ClientHL c;
-	private ExecutorService pool;
+	public int maxIdleTime;
+	private int port;
+	private int nbMaxConnexion;
+		
+	public ServerEchoHL (int maxIdleTime, int port,  int nbMaxConnexion){
+		this.nbMaxConnexion = nbMaxConnexion;
+		this.maxIdleTime = maxIdleTime;
+		this.port = port;
+	}
 	
-	public ServerEchoHL (){
-		//create the socket
+	public void launch() {
+		ServerSocket serverSocket;
+		ExecutorService execService;
+		
 		try {
-				s = new ServerSocket(5555);
-				pool = Executors.newFixedThreadPool(3);	
-		}
-		catch (java.io.IOException e){
-				System.out.println(e);
-				System.exit(1);
-		}
-		
-		// OK, now listen for connections
-		System.out.println("Server is listening.");
-		
-		try{
+			serverSocket = new ServerSocket(this.port);
+			execService = Executors.newFixedThreadPool(this.nbMaxConnexion);
 			while (true){
-				client = s.accept();
-				//create a separate thread to service the request
-				c = new ClientHL(client);
-				//new Thread(c).start();
-				pool.execute(c);
+				execService.execute(new ClientHL(serverSocket.accept(), this));
 			}
+		} catch (java.io.IOException e){
+			System.out.println("Erreur : " + e.toString());
 		}
-		catch (java.io.IOException e){
-			System.out.println(e);
-		}
-}
-	
+	}
 }

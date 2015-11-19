@@ -8,7 +8,7 @@ import java.io.*;
 class ClientLL implements Runnable
 {
   private Thread thread;
-  private static Socket socket;
+  private Socket socket;
   private PrintStream printStream;
   private BufferedReader bufferedReader;
   private static ServerEchoLL serverEcho;
@@ -45,14 +45,14 @@ class ClientLL implements Runnable
     			@Override
     			public void run() {
     			  printStream.println("Time out : vous allez etre deconnecte");
-    			  deconnection();
+    			  deconnection(socket);
     			}
     		};
     	t.schedule(tt, serverEcho.maxIdleTime);
         message = bufferedReader.readLine();
         t.cancel();
         if(message.equals("deconnection")){
-        	deconnection();
+        	deconnection(socket);
         }
         printStream.println(message);
       }
@@ -62,9 +62,9 @@ class ClientLL implements Runnable
     
   }
   
-  public static void deconnection(){
+  public static void deconnection(Socket s){
 	  try {
-		socket.close();
+		s.close();
 		serverEcho.deconnection();
 	} catch (IOException e) {}
   }

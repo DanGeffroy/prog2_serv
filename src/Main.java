@@ -51,7 +51,8 @@ public class Main {
 			servLow.launch();
 		} else if (implementation.equals("highlvl")) {
 			System.out.println("Lancement du serveur de haut niveau");
-			ServerEchoHL servHigt = new ServerEchoHL();
+			ServerEchoHL servHigt = new ServerEchoHL(maxIdleTime, port, nbMaxConnexion);
+			servHigt.launch();
 		} else {
 			System.out.println("Implementation " + implementation
 					+ " est inconnue");

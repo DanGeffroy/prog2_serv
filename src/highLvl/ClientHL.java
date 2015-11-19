@@ -1,45 +1,61 @@
 package highLvl;
 
 import java.net.*;
+import java.util.Timer;
+import java.util.TimerTask;
+
+
 import java.io.*;
 
 public class ClientHL  implements Runnable{
-	private Socket outputLine;
-	private PrintStream ps; 
-    private BufferedReader br; 
+	private Socket socket;
+	private PrintStream printStream; 
+    private BufferedReader bufferedReader; 
+    private static ServerEchoHL serverEcho;
 
-    public ClientHL(Socket s){
-		outputLine = s;
+    public ClientHL(Socket s, ServerEchoHL serverE){
+    	serverEcho = serverE;
+		socket = s;
 	}
 	
-	public void run() {
+	public synchronized void run() {
 		try{
-			//create a PrintWriter object with automatic flushing
-			// This allows ordinary file IO over the socket
-			br = new BufferedReader(new InputStreamReader(outputLine.getInputStream(), "ASCII"));
-			ps = new PrintStream(outputLine.getOutputStream(), true, "ASCII");
-		
-    	ps.println("Utiliser /exit pour sortir");
-    	ps.println("Serveur ECHO, dites bonjour !");
-    	while (true)
-    	{
-			String pending = br.readLine();	
-			if (pending.equals("/exit"))
-			{
-				ps.println("Vous allez etre deconnecte");
-				outputLine.close();
-			}
-			ps.println(pending);
-    	}
-    }
-    catch (Exception e){ System.out.println("oh oh");}
-    finally 
-    {
-      try
-      {
-    	  outputLine.close();
-      }
-      catch (IOException e){ }
-    }
-  }
+			String message;
+			Timer t;
+			TimerTask tt;
+			
+			printStream = new PrintStream(socket.getOutputStream());
+			bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			
+	    	printStream.println("Connection au serveur, ce serveur vous renvoi tout ce que vous ecrivez");
+	    	printStream.println("Ecrivez deconnection pour vous deconnectez du serveur");
+	      
+	    	while (true)
+	    	{
+	    		t = new Timer();
+	     	    tt = new TimerTask() {
+	     			@Override
+	     			public void run() {
+	     			  printStream.println("Time out : vous allez etre deconnecte");
+	     			  deconnection(socket);
+	     			}
+	     		};
+		     	t.schedule(tt, serverEcho.maxIdleTime);
+		         message = bufferedReader.readLine();
+		         t.cancel();
+		         if(message.equals("deconnection")){
+		         	deconnection(socket);
+		         }
+		         printStream.println(message);
+	    	}
+	    }
+	    catch (Exception e){
+	    }
 	}
+	
+	public static void deconnection(Socket s){
+		  try {
+			s.close();
+		} catch (IOException e) {}
+	  }
+}
